@@ -2,6 +2,7 @@
 
 int printBytes (void *p, int);
 
+
 int main(void) {
 
     char arr[4] = {'A','B','C','D'};
@@ -10,13 +11,15 @@ int main(void) {
     return 0;
 }
 
+
+/*Question 1*/
 int printBytes (void *p, int bytes)
 {
     int i;
     printf("Starting at memory address: %p\n", p);
     for (i=0; i<bytes; i++)
     {
-        printf("00%d : %d\n", i+1, *(char *)p);
-        p = ((char*)p) + 1;
+        printf("00%d : %d\n",i+1, *(unsigned char *)p);
+        p= ((char *)p)+ 1;
     }
 }

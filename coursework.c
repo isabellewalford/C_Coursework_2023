@@ -1,11 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 int printBytes (void *, int);
 int reverseText(char [], char []);
 
 
 int main(int argc, char **argv) {
+
+    printf("Question 1:\n");
 
     char arr[4] = {'A','B','C','D'};
     printBytes(&arr, 4);
@@ -40,29 +43,40 @@ int reverseText(char fileIn[], char fileOut[])
         printf("Unable to read file: %d: %s\n", errno, strerror(errno));
         exit(1);
     }
+    else
+    {
+        printf("input file found");
+    }
 
     if ((fpOut = fopen(fileOut, "r")) == NULL)
     {
         fclose(fpOut);
         fpOut = fopen(fileOut, "w");
+        printf("output file created");
     }
     else 
     {
         fclose(fpOut);
         fpOut = fopen(fileOut, "a");
+        printf("output file found");
     }
     
     while ( !feof(fp) )
-   {
-      ch = fgetc(fp);
+    {
+        ch = fgetc(fp);
         if( ch == EOF || ch == '\n' )
         {
             break;
         }
         ++count;
-   }
+    }
+
+    char reverse[count] = strrev(fgets(fileIn));
+    fputs(reverse, fpOut);
+
 
     fclose(fpIn);
     fclose(fpOut);
     return 0;
 }
+

@@ -8,10 +8,13 @@ int reverseText(char [], char []);
 
 int main(int argc, char **argv) {
 
+/*
     printf("Question 1:\n");
-
     char arr[4] = {'A','B','C','D'};
     printBytes(&arr, 4);
+*/
+    printf("Question2:\n");
+    reverseText(argv[1],argv[2]);
 
     return 0;
 }
@@ -24,8 +27,8 @@ int printBytes (void *p, int bytes)
     printf("Starting at memory address: %p\n", p);
     for (i=0; i<bytes; i++)
     {
-        printf("00%d : %d\n",i+1, *(unsigned char *)p);
-        p= ((char *)p)+ 1;
+        printf("00%d : %d\n",i+1, *(int *)p);
+        p= ((unsigned char *)p)+ 1;
     }
     return 0;
 }
@@ -47,7 +50,24 @@ int reverseText(char fileIn[], char fileOut[])
     {
         printf("input file found");
     }
+/*   
+    while ( !feof(fpIn) )
+    {
+        ch = fgetc(fpIn);
+        if( ch == EOF || ch == '\n' )
+        {
+            break;
+        }
+        ++count;
+    }
+    printf("character count: %d", count);
+   
 
+    malloc reverse with size count * char
+    reverse = strrev(fgets(fileIn));
+*/
+    fclose(fpIn);
+/*
     if ((fpOut = fopen(fileOut, "r")) == NULL)
     {
         fclose(fpOut);
@@ -60,23 +80,13 @@ int reverseText(char fileIn[], char fileOut[])
         fpOut = fopen(fileOut, "a");
         printf("output file found");
     }
-    
-    while ( !feof(fp) )
-    {
-        ch = fgetc(fp);
-        if( ch == EOF || ch == '\n' )
-        {
-            break;
-        }
-        ++count;
-    }
 
-    char reverse[count] = strrev(fgets(fileIn));
     fputs(reverse, fpOut);
 
-
-    fclose(fpIn);
     fclose(fpOut);
+*/
+
     return 0;
+
 }
 

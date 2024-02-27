@@ -1,1 +1,19 @@
-an example file
+
+    /*
+    if ((fpOut = fopen(fileOut, "r")) == NULL)
+    {
+        fclose(fpOut);
+        fpOut = fopen(fileOut, "w");
+        printf("output file created\n");
+    }
+    else 
+    {
+        fclose(fpOut);
+        fpOut = fopen(fileOut, "a");
+        printf("output file found\n");
+    }
+
+    fputs(reverse, fpOut);
+
+    fclose(fpOut);
+*/

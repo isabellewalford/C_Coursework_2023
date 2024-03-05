@@ -1,51 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <string.h>
-
-int printBytes(void *, int);
-
-char *reverseStr(char *);
-int getCount(char []);
-int reverseText(char [], int, char **);
-int writeText(char[], char[]);
-
-int main(int argc, char **argv) {
-
-    printf("Question 1:\n");
-    char arr[4] = {'A','B','C','D'};
-    printf("arr[4] = %c, %c, %c, %c\n",arr[0],arr[1],arr[2],arr[3]);
-    printBytes(arr, 4);
-
-
-    printf("Question 2:\n");
-    char *reverse = NULL;
-
-    reverseText(argv[1],getCount(argv[1]),&reverse);
-    writeText(argv[2],reverse);
-    
-    return 0;
-}
-
-
-/*Question 1*/
-int printBytes (void *p, int bytes)
-{
-    int i;
-    printf("Starting at memory address: %p\n", p);
-    for (i=0; i<bytes; i++)
-    {
-        /*cast to char to get one byte of memory*/
-        printf("00%d : %d\n",i+1, *(char *)p);
-        p++;
-    }
-    return 0;
-}
-
-/*Question 2*/
 
 /* swap each char to reverse string*/
-char *reverseStr(char *str)
+extern char *reverseStr(char *str)
 {
     if (!str || ! *str)
         return str;
@@ -64,11 +19,12 @@ char *reverseStr(char *str)
     return str;
 }
 
-int getCount(char fileIn[])
+/*gets the number of characters in the first line of a file*/
+extern int getCount(char fileIn[])
 {
     FILE *fpIn;
     char ch;
-    int count = 0;
+    int count;
     
 
     if ((fpIn = fopen(fileIn, "r")) == NULL)
@@ -98,7 +54,8 @@ int getCount(char fileIn[])
     return count;
 }
 
-int reverseText(char fileIn[], int count, char **reverse)
+/*gets the first line and reverses it*/
+extern int reverseText(char fileIn[], int count, char **reverse)
 {
     FILE *fpIn;
 
@@ -129,7 +86,8 @@ int reverseText(char fileIn[], int count, char **reverse)
     return 0;
 }
 
-int writeText(char fileOut[], char reverse[])
+/*writes the reversed line to file*/
+extern int writeText(char fileOut[], char reverse[])
 {
     FILE *fpOut;
 

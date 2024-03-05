@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     printBytes(arr, 4);
 
 
-    printf("Question 2:\n");
+    printf("\nQuestion 2:\n");
     char *reverse = NULL;
 
     reverseText(argv[1],getCount(argv[1]),&reverse);
@@ -159,3 +159,4 @@ int writeText(char fileOut[], char reverse[])
     return 0;
 }
 
+/*Question 3*/

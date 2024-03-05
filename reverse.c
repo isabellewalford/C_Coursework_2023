@@ -1,5 +1,8 @@
+#include <reverse.h>
 
-/* swap each char to reverse string*/
+/*Question 2
+
+swap each char to reverse string*/
 extern char *reverseStr(char *str)
 {
     if (!str || ! *str)

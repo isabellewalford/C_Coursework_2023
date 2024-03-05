@@ -4,26 +4,28 @@
 #include <string.h>
 
 int printBytes(void *, int);
-char *strrev(char *);
-int getCount(char [], int *);
-int reverseText(char [], char [], int, char *);
 
+char *reverseStr(char *);
+int getCount(char [], int *);
+int reverseText(char [], int, char **);
+int writeText(char[], char[]);
 
 int main(int argc, char **argv) {
 
     printf("Question 1:\n");
     char arr[4] = {'A','B','C','D'};
-    printf("arr[4] = %d, %d, %d, %d\n",arr[0],arr[1],arr[2],arr[3]);
+    printf("arr[4] = %c, %c, %c, %c\n",arr[0],arr[1],arr[2],arr[3]);
     printBytes(arr, 4);
 
 
-    printf("Question2:\n");
+    printf("Question 2:\n");
     int count = 0;
     char *reverse = NULL;
 
     getCount(argv[1], &count);
-    reverseText(argv[1],argv[2],count,reverse);
-
+    reverseText(argv[1],count,&reverse);
+    writeText(argv[2],reverse);
+    
     return 0;
 }
 
@@ -44,8 +46,8 @@ int printBytes (void *p, int bytes)
 
 /*Question 2*/
 
-/*strrev is not available with some compilers so manually added*/
-char *strrev(char *str)
+/* swap each char to reverse string*/
+char *reverseStr(char *str)
 {
     if (!str || ! *str)
         return str;
@@ -64,7 +66,7 @@ char *strrev(char *str)
     return str;
 }
 
-int getCount(char fileIn[],int *c)
+int getCount(char fileIn[],int *charCount)
 {
     FILE *fpIn;
     char ch;
@@ -77,11 +79,12 @@ int getCount(char fileIn[],int *c)
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
         exit(1);
     }
-    else
+    else 
     {
-        printf("input file found\n");
+        printf("Input file found\n");
     }
   
+    /*count characters in the file until reaching a new line or end of file*/
     while ( !feof(fpIn) )
     {
         ch = fgetc(fpIn);
@@ -90,26 +93,26 @@ int getCount(char fileIn[],int *c)
             break;
         }
         count++;
-        printf("character count: %d\n", count);
     }
-    *c = count;
-    printf("character count: %d\n", *c);
-    fclose(fpIn);
 
+    /*set the value of count for reverseText to use*/
+    *charCount = count;
+    fclose(fpIn);
     return 0;
 }
 
-int reverseText(char fileIn[], char fileOut[], int count, char *reverse)
+int reverseText(char fileIn[], int count, char **reverse)
 {
     FILE *fpIn;
-    FILE *fpOut;
-    
-    if (!(reverse = (char *)malloc(count*sizeof(char)))){
+
+    /*assign and check memory for an array that is the size of the characters in the first line*/
+    if (!(*reverse = (char *)malloc(count*sizeof(char)))){
         printf("Out of memory\n");
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
         exit(1); 
     }
 
+    /*set file pointer and check it has opened*/
     if ((fpIn = fopen(fileIn, "r")) == NULL)
     {
         printf("Unable to read file\n");
@@ -117,14 +120,45 @@ int reverseText(char fileIn[], char fileOut[], int count, char *reverse)
         exit(1);
     }
     
-    fgets(reverse, count, fpIn);
-    strrev(reverse);
-    printf("Reversed characters: %s\n",&reverse);
+    /*get first line*/
+    fgets(*reverse, count, fpIn);
+    printf("Line read as: %s\n",*reverse);
+
+    /*reverse characters*/
+    reverseStr(*reverse);
+    printf("Reversed line: %s\n",*reverse);
     fclose(fpIn);
-    
 
     return 0;
 }
 
+int writeText(char fileOut[], char reverse[])
+{
+    FILE *fpOut;
 
+    /*check is output file exists*/
+    if ((fpOut = fopen(fileOut, "w")) == NULL)
+    {
+        printf("Error opening file\n");
+        fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
+        exit(1);
+    }
+
+    /*writes reversed line to output and closes file*/
+    if (! fputs(reverse, fpOut))
+    {
+        printf("Error writing to file\n");
+        fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
+        exit(1);
+    }
+    else 
+    {
+        printf("Write successful\n");
+    }
+    
+    /*close file ans free memory*/
+    fclose(fpOut);
+    free(reverse);
+    return 0;
+}
 

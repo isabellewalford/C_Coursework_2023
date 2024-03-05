@@ -1,19 +1,15 @@
 
     /*
-    if ((fpOut = fopen(fileOut, "r")) == NULL)
+     /*check is output file exists*/
+    if ((fpOut = fopen(fileOut, "w")) == NULL)
     {
-        fclose(fpOut);
-        fpOut = fopen(fileOut, "w");
-        printf("output file created\n");
-    }
-    else 
-    {
-        fclose(fpOut);
-        fpOut = fopen(fileOut, "a");
-        printf("output file found\n");
+        printf("Error opening file\n");
+        fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
+        exit(1);
     }
 
+    /*writes reversed line to output and closes file*/
     fputs(reverse, fpOut);
-
+    free(reverse);
     fclose(fpOut);
 */

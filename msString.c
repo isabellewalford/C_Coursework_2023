@@ -6,9 +6,10 @@
 
 typedef void * msString;
 
-extern msString  msSetString     (char *);
+msString  msSetString     (char *);
+char     *msGetString     (msString);
+
 /*
-extern char     *msGetString     (msString);
 extern void      msCopy          (msString *, msString);
 extern void      msConcatenate   (msString *, msString);
 extern long int  msLength        (msString);
@@ -26,37 +27,41 @@ struct msString
 int main()
 {
     msString ms = msSetString (" Hello ");
-    
-    prinf("set ms as:\nlength: %ld\nstr: %s\n",ms->length, ms->str);
     msString ms2 = msSetString (" World !");
-    prinf("set ms2 as:\nlength: %ld\nstr: %s\n",ms2->length, ms2->str);
+    printf("ms set as %s\n", msGetString(ms));
 
 }
 
-extern msString msSetString(char *str)
+msString msSetString(char *str)
 {
-    if (!(struct msString *msStr = (struct msString *)malloc(sizeof(struct msString)))){
+    struct msString *string = (struct msString *)malloc(sizeof(struct msString));
+    if (string == NULL){
         printf("Out of memory\n");
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
         exit(1); 
     }
 
-    msStr->length = strlen(str);
+    string->length = strlen(str);
 
-    if (!(msStr->str = (char *)malloc(msStr->length*sizeof(char)))){
+    if (!(string->str = (char *)malloc(string->length*sizeof(char)))){
         printf("Out of memory\n");
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
-        free(msStr);
+        free(string);
         exit(1); 
     }
 
-    msStr->str = str;
-    return msStr;
+    string->str = str;
+    return (msString)(string);
 }
 
+char *msGetString(msString msStr)
+{
+    struct msString *string = (struct msString *)msStr;
+    return string->str;
+}
 
 /*
-extern char     *msGetString     (msString);
+
 extern void      msCopy          (msString *, msString);
 extern void      msConcatenate   (msString *, msString);
 extern long int  msLength        (msString);

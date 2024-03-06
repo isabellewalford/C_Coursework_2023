@@ -7,10 +7,11 @@
 typedef void * msString;
 
 msString  msSetString     (char *);
-char     *msGetString     (msString);
 
 /*
-extern void      msCopy          (msString *, msString);
+char     *msGetString     (msString);
+void      msCopy          (msString *, msString);
+
 extern void      msConcatenate   (msString *, msString);
 extern long int  msLength        (msString);
 extern int       msCompare       (msString, msString);
@@ -21,46 +22,63 @@ static void      msError         (char *);
 struct msString
 {
     long int length;
-    char *str;
+    char *chars;
 };
 
 int main()
 {
     msString ms = msSetString (" Hello ");
     msString ms2 = msSetString (" World !");
-    printf("ms set as %s\n", msGetString(ms));
 
 }
 
 msString msSetString(char *str)
 {
-    struct msString *string = (struct msString *)malloc(sizeof(struct msString));
-    if (string == NULL){
+    int i;
+    struct msString *msStruct = (struct msString *)malloc(sizeof(struct msString));
+    if (msStruct == NULL){
         printf("Out of memory\n");
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
         exit(1); 
     }
 
-    string->length = strlen(str);
+    msStruct->length = strlen(str);
 
-    if (!(string->str = (char *)malloc(string->length*sizeof(char)))){
+    if (!(msStruct->chars = (char *)malloc(msStruct->length*sizeof(char)))){
         printf("Out of memory\n");
         fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
-        free(string);
+        free(msStruct);
         exit(1); 
     }
 
-    string->str = str;
-    return (msString)(string);
+    memcpy(msStruct->chars,str,msStruct->length);
+    printf("set\n");
+
+    return (msString)(msStruct);
 }
+
+
+
+
+
+/*
 
 char *msGetString(msString msStr)
 {
-    struct msString *string = (struct msString *)msStr;
-    return string->str;
-}
+    struct msString *msStruct = (struct msString *)msStr;
+    char *str;
+    long int length = msStruct->length;
 
-/*
+    if (!(str = (char *)malloc((length + 1)*sizeof(char)))){
+        printf("Out of memory\n");
+        fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
+        exit(1); 
+    }
+    memcpy(str,msStruct->chars,length);
+    str[length] = '\0';
+
+    return str;
+}
 
 extern void      msCopy          (msString *, msString);
 extern void      msConcatenate   (msString *, msString);

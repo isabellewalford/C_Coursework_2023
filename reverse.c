@@ -5,8 +5,6 @@
 swap each char to reverse string*/
 extern char *reverseStr(char *str)
 {
-    if (!str || ! *str)
-        return str;
 
     int i = strlen(str) - 1, j = 0;
 
@@ -64,8 +62,7 @@ extern int reverseText(char fileIn[], int count, char **reverse)
 
     /*assign and check memory for an array that is the size of the characters in the first line*/
     if (!(*reverse = (char *)malloc(count*sizeof(char)))){
-        printf("Out of memory\n");
-        fprintf(stderr," error:%d: %s\n", errno, strerror(errno));
+        fprintf(stderr,"Out of memory\n");
         exit(1); 
     }
 
